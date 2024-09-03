@@ -1,66 +1,417 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Movie History Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Requirements
+PHP 8.2
+MongoDB 7.x
 
-## About Laravel
+### Auth
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### Register
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[POST] /api/auth/
+This endpoint makes the user registration.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Headers:
 
-## Learning Laravel
+| Header       | Value            |
+| ------------ | ---------------- |
+| Accept       | application/json |
+| Content-type | application/json |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Body: JSON
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Property | Description   | Required | Condition | Type   |
+| -------- | ------------- | -------- | --------- | ------ |
+| name     | User name     | yes      | ----      | String |
+| email    | User email    | yes      | ----      | String |
+| password | User password | yes      | ----      | String |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Responses:
 
-## Laravel Sponsors
+**_ HTTP Code 201 _**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+    {
+        "success": true
+    }
+```
 
-### Premium Partners
+**_ HTTP Code 400 _**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+    {
+        "success": false
+    }
+```
 
-## Contributing
+**_ HTTP Code 422 _**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
 
-## Code of Conduct
+#### Login
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+[POST] /api/auth/login
+This endpoint makes user login and generante a bearer token
 
-## Security Vulnerabilities
+Headers:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Header       | Value            |
+| ------------ | ---------------- |
+| Accept       | application/json |
+| Content-type | application/json |
 
-## License
+Body:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Property | Description   | Required | Condition | Type   |
+| -------- | ------------- | -------- | --------- | ------ |
+| email    | User email    | yes      | ----      | String |
+| password | User password | yes      | ----      | String |
+
+Responses:
+
+**_ HTTP Code 201 _**
+
+```
+    {
+        "success": true
+        "token": ...
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+### User
+
+#### Update
+
+[PATCH] /api/user/
+This endpoint is used to update user`s personal data.
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Body: JSON
+
+| Property | Description | Required | Condition | Type   |
+| -------- | ----------- | -------- | --------- | ------ |
+| name     | User name   | no       | ----      | String |
+| email    | User email  | no       | ----      | String |
+
+Responses:
+
+**_ HTTP Code 200 _**
+
+```
+    {
+        "success": true
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+#### Update Password
+
+[PATCH] /api/user/password
+This endpoint is to update user password
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Body: JSON
+
+| Property     | Description       | Required | Condition | Type   |
+| ------------ | ----------------- | -------- | --------- | ------ |
+| old_password | User old password | yes      | ----      | String |
+| new_password | User new password | yes      | ----      | String |
+
+Responses:
+
+**_ HTTP Code 200 _**
+
+```
+    {
+        "success": true
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+#### Delete User
+
+[DELETE] /api/user
+This endpoint is used to delete user data.
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Responses:
+
+**_ HTTP Code 200 _**
+
+```
+    {
+        "success": true
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+### Movies
+
+#### Get Movie Data
+
+[GET] /api/movie
+This endpoint is used to get an movie data.
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Query Params:
+
+| Property | Description   | Required | Condition | Type   |
+| -------- | ------------- | -------- | --------- | ------ |
+| name     | Movie name    | no       | ----      | String |
+| imdb     | Movie IMDB ID | no       | ----      | String |
+
+Responses:
+
+**_ HTTP Code 200 _**
+
+```
+    {
+        "success": true,
+        "data": {
+            "Title": "Guardians of the Galaxy",
+            "Year": "2014",
+            "Rated": "PG-13",
+            "Released": "01 Aug 2014",
+            "Runtime": "121 min",
+            "Genre": "Action, Adventure, Comedy",
+            "Director": "James Gunn",
+            "Writer": "James Gunn, Nicole Perlman, Dan Abnett",
+            "Actors": "Chris Pratt, Vin Diesel, Bradley Cooper",
+            "Plot": "A group of intergalactic criminals must pull together to stop a fanatical warrior with plans to purge the universe.",
+            "Language": "English",
+            "Country": "United States, United Kingdom",
+            "Awards": "Nominated for 2 Oscars. 52 wins & 103 nominations total",
+            "Ratings": [
+                {
+                    "Source": "Internet Movie Database",
+                    "Value": "8.0/10"
+                },
+                {
+                    "Source": "Rotten Tomatoes",
+                    "Value": "92%"
+                },
+                {
+                    "Source": "Metacritic",
+                    "Value": "76/100"
+                }
+            ],
+            "Metascore": "76",
+            "imdbRating": "8.0",
+            "imdbVotes": "1,284,993",
+            "imdbID": "tt2015381",
+            "Type": "movie",
+            "DVD": "N/A",
+            "BoxOffice": "$333,718,600",
+            "Production": "N/A",
+            "Website": "N/A",
+            "Response": "True"
+        }
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+#### Add to user`s history
+
+[POST] /api/movie
+This endpoint is used to add a movie to user's history.
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Query Params:
+
+| Property | Description   | Required | Condition | Type   |
+| -------- | ------------- | -------- | --------- | ------ |
+| imdb     | Movie IMDB ID | no       | ----      | String |
+
+Responses:
+
+**_ HTTP Code 201 _**
+
+```
+    {
+        "success": true
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
+
+#### Remove from user`s history
+
+[DELETE] /api/movie
+This endpoint is used to remove a movie from user's history.
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Query Params:
+
+| Property | Description   | Required | Condition | Type   |
+| -------- | ------------- | -------- | --------- | ------ |
+| imdb     | Movie IMDB ID | no       | ----      | String |
+
+Responses:
+
+**_ HTTP Code 200 _**
+
+```
+    {
+        "success": true
+    }
+```
+
+**_ HTTP Code 400 _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 422 _**
+
+```
+    {
+        "success": false,
+        "errors": ...
+    }
+```
