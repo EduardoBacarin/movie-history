@@ -337,7 +337,7 @@ Headers:
 | Content-type  | application/json |
 | Authorization | Bearer ...       |
 
-Query Params:
+Body:
 
 | Property | Description   | Required | Condition | Type   |
 | -------- | ------------- | -------- | --------- | ------ |
@@ -383,7 +383,7 @@ Headers:
 | Content-type  | application/json |
 | Authorization | Bearer ...       |
 
-Query Params:
+Body:
 
 | Property | Description   | Required | Condition | Type   |
 | -------- | ------------- | -------- | --------- | ------ |
