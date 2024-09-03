@@ -1,8 +1,9 @@
 ## Movie History Documentation
 
 ### Requirements
-PHP 8.2
-MongoDB 7.x
++ PHP 8.3
++ MongoDB 7.x
++ Redis
 
 ### Auth
 
