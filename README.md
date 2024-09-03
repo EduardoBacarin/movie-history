@@ -9,6 +9,7 @@ MongoDB 7.x
 #### Register
 
 [POST] /api/auth/
+
 This endpoint makes the user registration.
 
 Headers:
@@ -56,6 +57,7 @@ Responses:
 #### Login
 
 [POST] /api/auth/login
+
 This endpoint makes user login and generante a bearer token
 
 Headers:
@@ -105,6 +107,7 @@ Responses:
 #### Update
 
 [PATCH] /api/user/
+
 This endpoint is used to update user`s personal data.
 
 Headers:
@@ -152,6 +155,7 @@ Responses:
 #### Update Password
 
 [PATCH] /api/user/password
+
 This endpoint is to update user password
 
 Headers:
@@ -199,6 +203,7 @@ Responses:
 #### Delete User
 
 [DELETE] /api/user
+
 This endpoint is used to delete user data.
 
 Headers:
@@ -241,6 +246,7 @@ Responses:
 #### Get Movie Data
 
 [GET] /api/movie
+
 This endpoint is used to get an movie data.
 
 Headers:
@@ -327,6 +333,7 @@ Responses:
 #### Add to user`s history
 
 [POST] /api/movie
+
 This endpoint is used to add a movie to user's history.
 
 Headers:
@@ -373,6 +380,7 @@ Responses:
 #### Remove from user`s history
 
 [DELETE] /api/movie
+
 This endpoint is used to remove a movie from user's history.
 
 Headers:
