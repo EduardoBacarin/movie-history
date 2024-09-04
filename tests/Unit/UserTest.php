@@ -43,12 +43,45 @@ class UserTest extends TestCase {
         ];
 
         $service = new User();
-        $create = $service->update("idToUpdate", $data);
-        $this->assertTrue($create['success']);
-        $this->assertEquals(200, $create['code']);
+        $update = $service->update("idToUpdate", $data);
+        $this->assertTrue($update['success']);
+        $this->assertEquals(200, $update['code']);
         $getData = ModelsUser::where("_id", "idToUpdate")->first();
         $this->assertEquals($data['email'], $getData->email);
         DB::collection("users")->where("_id", "idToUpdate")->delete();
+    }
+
+    public function test_delete_user_success(): void {
+        DB::collection("users")->where("_id", "idToDelete")->delete();
+        DB::collection("users")->insert([
+            "_id" => "idToDelete",
+            "name" => "John Doe",
+            "email" => "john@doe.com"
+        ]);
+
+        $service = new User();
+        $delete = $service->delete("idToDelete");
+        $this->assertTrue($delete['success']);
+        $this->assertEquals(200, $delete['code']);
+        $getData = ModelsUser::where("_id", "idToDelete")->first();
+        $this->assertEmpty($getData);
+        DB::collection("users")->where("_id", "idToDelete")->delete();
+    }
+
+    public function test_get_user_success(): void {
+        DB::collection("users")->where("_id", "idToGet")->delete();
+        DB::collection("users")->insert([
+            "_id" => "idToGet",
+            "name" => "John Doe",
+            "email" => "john@doe.com"
+        ]);
+
+        $service = new User();
+        $get = $service->get("idToGet");
+        $this->assertTrue($get['success']);
+        $this->assertEquals(200, $get['code']);
+        $this->assertEquals(["_id" => "idToGet","name" => "John Doe","email" => "john@doe.com"], $get['data']->toArray());
+        DB::collection("users")->where("_id", "idToGet")->delete();
     }
 
     public function test_validate_create_user_request_success(): void {

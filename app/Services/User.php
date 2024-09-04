@@ -25,4 +25,22 @@ class User extends Service {
             return $this->responsePattern(false, 404);
         }
     }
+
+    public function delete($id) {
+        if (ModelsUser::where('_id', $id)->first()) {
+            ModelsUser::where('_id', $id)->first()->delete();
+            return $this->responsePattern(true, 200);
+        } else {
+            return $this->responsePattern(false, 404);
+        }
+    }
+
+    public function get($id) {
+        $find = ModelsUser::where('_id', $id)->first();
+        if ($find) {
+            return $this->responsePattern(true, 200, $find);
+        } else {
+            return $this->responsePattern(false, 404);
+        }
+    }
 }
