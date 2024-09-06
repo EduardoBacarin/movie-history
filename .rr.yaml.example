@@ -1,0 +1,26 @@
+http:
+  address: 127.0.0.1:8000
+  pool:
+    num_workers: 1
+    max_jobs: 500
+    supervisor:
+      exec_ttl: 30s
+  static:
+    dir: public
+  middleware: [ "static" ]
+
+server:
+  command: "php ./vendor/bin/roadrunner-worker"
+
+  env:
+    - APP_ENV: local
+    - LARAVEL_OCTANE: "1"
+
+rpc:
+  listen: tcp://127.0.0.1:6001
+
+logs:
+  mode: production
+  level: debug
+  output: stdout
+  encoding: json

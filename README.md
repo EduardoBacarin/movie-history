@@ -1,10 +1,48 @@
 ## Movie History Documentation
 
+This project is for portfolio only. Consists in get some movie information using OMDB API and add into a user's list to manage watched movies. In this project I use MongoDB, Redis and Laravel 10 and has Roadrunner as PHP Server, a manual authentication with custom token generation using Redis to store tokens with "TTL", a Middleware to check if user is logged in and third party API requests (OMDB).
+
+You can find a Postman Collection in project root followed by name "postman-collection.json", you can import this file in your Postman and test the endpoints.
+
+You can see other projects with in my GitHub profile: <a href="https://github.com/EduardoBacarin">https://github.com/EduardoBacarin</a>
+
+### Disclaimer about Docker
+
+I don't like to use Docker containers because is a waste of computer resource. I made this project using Linux Ubuntu as a Windows Subsystem with all services running in this subsystem, it's better, easier and lightweight.
+It was tested on Linux Mint too.
+
 ### Requirements
 
 -   PHP 8.3
 -   MongoDB 7.x
 -   Redis
+-   RoadRunner
+
+### Setup
+
+1. Download or clone repository
+2. Copy .env.example and rename to .env
+3. Copy .rr.yaml.example and rename to .rr.yaml
+4. Configure .env file as your system
+5. Install all dependencies
+
+```
+    composer install
+```
+
+3. Run Unit and Feature tests
+
+```
+    php artisan test
+```
+
+4. Run server
+
+```
+    php artisan octane:start
+```
+
+5. Check if connections are Ok hitting "https://127.0.0.1:8000"
 
 ### Auth
 
@@ -46,6 +84,7 @@ Responses:
         "success": false
     }
 ```
+
 **_ HTTP Code 409 - User already exists _**
 
 ```
@@ -148,7 +187,6 @@ Responses:
         "success": false
     }
 ```
-
 
 ### User
 
