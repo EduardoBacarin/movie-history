@@ -26,6 +26,10 @@ It was tested on Linux Mint too.
 2. Copy .env.example and rename to .env
 3. Copy .rr.yaml.example and rename to .rr.yaml
 4. Configure .env file as your system
+4. Generate Application key
+```
+    php artisan key:generate
+```
 5. Install all dependencies
 
 ```
