@@ -1,15 +1,16 @@
 ## Movie History Documentation
 
 ### Requirements
-+ PHP 8.3
-+ MongoDB 7.x
-+ Redis
+
+-   PHP 8.3
+-   MongoDB 7.x
+-   Redis
 
 ### Auth
 
 #### Register
 
-[POST] /api/auth/
+[POST] /api/auth/register
 
 This endpoint makes the user registration.
 
@@ -30,7 +31,7 @@ Body: JSON
 
 Responses:
 
-**_ HTTP Code 201 _**
+**_ HTTP Code 201 - Created _**
 
 ```
     {
@@ -38,7 +39,14 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
+
+```
+    {
+        "success": false
+    }
+```
+**_ HTTP Code 409 - User already exists _**
 
 ```
     {
@@ -46,7 +54,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -77,16 +85,17 @@ Body:
 
 Responses:
 
-**_ HTTP Code 201 _**
+**_ HTTP Code 201 - Created _**
 
 ```
     {
         "success": true
+        "message": "Token generated",
         "token": ...
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -94,7 +103,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -102,6 +111,44 @@ Responses:
         "errors": ...
     }
 ```
+
+#### Logout
+
+[DELETE] /api/auth/logout
+This endpoint makes user logout
+
+Headers:
+
+| Header        | Value            |
+| ------------- | ---------------- |
+| Accept        | application/json |
+| Content-type  | application/json |
+| Authorization | Bearer ...       |
+
+Body:
+
+| Property | Description | Required | Condition | Type |
+| -------- | ----------- | -------- | --------- | ---- |
+
+Responses:
+
+**_ HTTP Code 200 - Ok _**
+
+```
+    {
+        "success": true,
+        "message": "Logged out"
+    }
+```
+
+**_ HTTP Code 400 - An error has occurred _**
+
+```
+    {
+        "success": false
+    }
+```
+
 
 ### User
 
@@ -128,7 +175,7 @@ Body: JSON
 
 Responses:
 
-**_ HTTP Code 200 _**
+**_ HTTP Code 200 - Ok _**
 
 ```
     {
@@ -136,7 +183,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -144,7 +191,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -176,7 +223,7 @@ Body: JSON
 
 Responses:
 
-**_ HTTP Code 200 _**
+**_ HTTP Code 200 - Ok _**
 
 ```
     {
@@ -184,7 +231,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -192,7 +239,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -217,7 +264,7 @@ Headers:
 
 Responses:
 
-**_ HTTP Code 200 _**
+**_ HTTP Code 200 - Ok _**
 
 ```
     {
@@ -225,7 +272,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -233,7 +280,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -267,7 +314,7 @@ Query Params:
 
 Responses:
 
-**_ HTTP Code 200 _**
+**_ HTTP Code 200 - Ok _**
 
 ```
     {
@@ -314,7 +361,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -322,7 +369,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -353,7 +400,7 @@ Body:
 
 Responses:
 
-**_ HTTP Code 201 _**
+**_ HTTP Code 201 - Created _**
 
 ```
     {
@@ -361,7 +408,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -369,7 +416,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {
@@ -400,7 +447,7 @@ Body:
 
 Responses:
 
-**_ HTTP Code 200 _**
+**_ HTTP Code 200 - Ok _**
 
 ```
     {
@@ -408,7 +455,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 400 _**
+**_ HTTP Code 400 - An error has occurred _**
 
 ```
     {
@@ -416,7 +463,7 @@ Responses:
     }
 ```
 
-**_ HTTP Code 422 _**
+**_ HTTP Code 422 - Validation error _**
 
 ```
     {

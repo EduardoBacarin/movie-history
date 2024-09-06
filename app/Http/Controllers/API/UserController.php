@@ -17,4 +17,13 @@ class UserController extends Controller
             return response()->json(['success' => false, 'message' => "An error has ocurred", 'code' => 400], 400);
         }
     }
+
+    public function get(Request $request){
+        try {
+            $service = new User();
+            return $service->get($this->getLoggedUserId($request));
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => "An error has ocurred", 'code' => 400], 400);
+        }
+    }
 }
