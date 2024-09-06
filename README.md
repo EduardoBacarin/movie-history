@@ -2,7 +2,7 @@
 
 **WORK IN PROGRESS**
 
-This project is for portfolio only. Consists in get some movie information using OMDB API and add into a user's list to manage watched movies. In this project I use MongoDB, Redis and Laravel 10 and has Roadrunner as PHP Server, a manual authentication with custom token generation using Redis to store tokens with "TTL", a Middleware to check if user is logged in and third party API requests (OMDB).
+This project is for portfolio only. Consists in get some movie information using OMDB API and add into a user's list to manage watched movies. In this project I use MongoDB, Redis and Laravel 10 and has Roadrunner as PHP Server (with Laravel Octane), a manual authentication with custom token generation using Redis to store tokens with "TTL", a Middleware to check if user is logged in and third party API requests (OMDB).
 
 You can find a Postman Collection in project root followed by name "postman-collection.json", you can import this file in your Postman and test the endpoints.
 
