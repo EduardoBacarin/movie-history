@@ -43,4 +43,26 @@ class User extends Service {
             return $this->responsePattern(false, 404);
         }
     }
+
+    public function addToHistory($imdbId, $userId){
+        $movieService = new Movie();
+        $getMovie = $movieService->getById($imdbId);
+        if ($getMovie['success']){
+            ModelsUser::where("_id", $userId)->push("movies", $getMovie['data']);
+            return $this->responsePattern(true, 201);
+        }else{
+            return $this->responsePattern(false, 404);
+        }
+    }
+
+    public function removeFromHistory($imdbId, $userId){
+        $movieService = new Movie();
+        $getMovie = $movieService->getById($imdbId);
+        if ($getMovie['success']){
+            ModelsUser::where("_id", $userId)->pull("movies", ["imdbID" => $imdbId]);
+            return $this->responsePattern(true, 200);
+        }else{
+            return $this->responsePattern(false, 404);
+        }
+    }
 }

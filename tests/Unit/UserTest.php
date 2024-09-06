@@ -138,4 +138,79 @@ class UserTest extends TestCase {
         $this->assertTrue($validator->fails());
         $this->assertEquals(["email" => ["The email field must be a valid email address."]], $validator->messages()->messages());
     }
+
+    public function test_user_add_movie_history_success(): void {
+        DB::collection("users")->where("_id", "idToAdd")->delete();
+        DB::collection("users")->insert([
+            "_id" => "idToAdd",
+            "name" => "John Doe",
+            "email" => "john@doe.com"
+        ]);
+
+        $service = new User();
+        $addToHistory = $service->addToHistory("tt0816692", "idToAdd");
+        $get = $service->get("idToAdd");
+        $this->assertTrue($addToHistory['success']);
+        $this->assertEquals(201, $addToHistory['code']);
+        $this->assertArrayHasKey("movies", $get['data']);
+        $this->assertEquals([
+            "Title" => "Interstellar",
+            "Year" => "2014",
+            "Rated" => "PG-13",
+            "Released" => "07 Nov 2014",
+            "Runtime" => "169 min",
+            "Genre" => "Adventure, Drama, Sci-Fi",
+            "Director" => "Christopher Nolan",
+            "Writer" => "Jonathan Nolan, Christopher Nolan",
+            "Actors" => "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
+            "Plot" => "When Earth becomes uninhabitable in the future, a farmer and ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team of researchers, to find a new planet for humans.",
+            "Language" => "English",
+            "Country" => "United States, United Kingdom, Canada",
+            "Awards" => "Won 1 Oscar. 44 wins & 148 nominations total",
+            "Poster" => "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+            "Ratings" => [
+              [
+                "Source" => "Internet Movie Database",
+                "Value" => "8.7/10"
+              ],
+              [
+                "Source" => "Rotten Tomatoes",
+                "Value" => "73%"
+              ],
+              [
+                "Source" => "Metacritic",
+                "Value" => "74/100"
+              ]
+              ],
+            "Metascore" => "74",
+            "imdbRating" => "8.7",
+            "imdbVotes" => "2,153,343",
+            "imdbID" => "tt0816692",
+            "Type" => "movie",
+            "DVD" => "N/A",
+            "BoxOffice" => "$188,020,017",
+            "Production" => "N/A",
+            "Website" => "N/A",
+            "Response" => "True",
+            ], $get['data']['movies'][0]);
+        DB::collection("users")->where("_id", "idToAdd")->delete();
+    }
+
+    public function test_user_remove_movie_history_success(): void {
+        DB::collection("users")->where("_id", "idToAdd")->delete();
+        DB::collection("users")->insert([
+            "_id" => "idToAdd",
+            "name" => "John Doe",
+            "email" => "john@doe.com"
+        ]);
+
+        $service = new User();
+        $addToHistory = $service->addToHistory("tt0816692", "idToAdd");
+        $removeFromHistory = $service->removeFromHistory("tt0816692", "idToAdd");
+        $get = $service->get("idToAdd");
+        $this->assertTrue($removeFromHistory['success']);
+        $this->assertEquals(200, $removeFromHistory['code']);
+        $this->assertEmpty($get['data']['movies']);
+        DB::collection("users")->where("_id", "idToAdd")->delete();
+    }
 }
