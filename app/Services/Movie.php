@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\User as ModelsUser;
-use Illuminate\Support\Facades\DB;
-
 class Movie extends Service {
     public function getById($id){
         $sendRequest = $this->sendRequest(env('OMDB_SERVER'), "/?apikey=" . env("OMDB_KEY") . "&i=" . $id, 'GET');

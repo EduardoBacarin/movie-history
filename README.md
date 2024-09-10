@@ -200,7 +200,7 @@ Responses:
 
 [PATCH] /api/user/
 
-This endpoint is used to update user`s personal data.
+This endpoint is used to update logged user`s personal data.
 
 Headers:
 
@@ -405,6 +405,14 @@ Responses:
     }
 ```
 
+**_ HTTP Code 404 - Movie not found _**
+
+```
+    {
+        "success": false
+    }
+```
+
 **_ HTTP Code 400 - An error has occurred _**
 
 ```
@@ -460,6 +468,14 @@ Responses:
     }
 ```
 
+**_ HTTP Code 409 - Movie already on history _**
+
+```
+    {
+        "success": false
+    }
+```
+
 **_ HTTP Code 422 - Validation error _**
 
 ```
@@ -500,6 +516,14 @@ Responses:
 ```
 
 **_ HTTP Code 400 - An error has occurred _**
+
+```
+    {
+        "success": false
+    }
+```
+
+**_ HTTP Code 404 - Movie not found in history _**
 
 ```
     {

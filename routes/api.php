@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,13 @@ Route::prefix("/auth")->group(function(){
 
 Route::prefix("/user")->middleware("api-token")->group(function(){
     Route::get("/", [UserController::class, "get"]);
+    Route::patch("/", [UserController::class, "update"]);
+    Route::patch("/password", [UserController::class, "password"]);
+    Route::delete("/", [UserController::class, "destroy"]);
+});
+
+Route::prefix("/movie")->middleware("api-token")->group(function(){
+    Route::get("/", [MovieController::class, "get"]);
+    Route::post("/", [MovieController::class, "addMovieToHistory"]);
+    Route::delete("/", [MovieController::class, "removeMovieFromHistory"]);
 });

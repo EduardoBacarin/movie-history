@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -15,7 +16,7 @@ class VerifyToken {
      */
     public function handle(Request $request, Closure $next): Response {
         $getToken = Redis::get("token:" . $request->bearerToken());
-        if (!$getToken){
+        if (!$getToken || !User::find(json_decode($getToken)->_id)){
             return response("Unauthenticated", 403);
         }
         return $next($request);
