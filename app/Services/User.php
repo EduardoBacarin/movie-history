@@ -47,7 +47,7 @@ class User extends Service {
         $find = ModelsUser::where('_id', $id)->first();
         if ($find) {
             $find->delete();
-            Log::channel('user')->info("User $id has been deleted", $find);
+            Log::channel('user')->info("User $id has been deleted", $find->toArray());
             return $this->responsePattern(true, 200);
         } else {
             return $this->responsePattern(false, 404);

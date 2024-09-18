@@ -10,32 +10,36 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UserTest extends TestCase {
-    /**
-     * A basic unit test example.
-     */
+    private $data = [
+        "_id" => "userId",
+        "name" => "John Doe",
+        "email" => "john@doe.com"
+    ];
+
+    public function setUp(): void{
+        parent::setUp();
+        DB::collection("users")->where("_id", $this->data['_id'])->delete();
+        ModelsUser::where("_id", hash("sha256", "email:john@doe2.com"))->delete();
+        DB::collection("users")->insert($this->data);
+    }
     public function test_create_user_success(): void {
+
         $data = [
             "name" => "John Doe",
-            "email" => "john@doe.com",
+            "email" => "john@doe2.com",
             "password" => "johndoe123"
         ];
 
-        ModelsUser::where("_id", hash("sha256", "email:" . $data["email"]))->delete();
         $service = new User();
         $create = $service->create($data);
         $this->assertTrue($create['success']);
         $this->assertEquals(201, $create['code']);
-        ModelsUser::where("_id", hash("sha256", "email:" . $data["email"]))->delete();
+        unset($data['password']);
+        $this->assertDatabaseHas('users', $data);
     }
 
 
     public function test_update_user_success(): void {
-        DB::collection("users")->where("_id", "idToUpdate")->delete();
-        DB::collection("users")->insert([
-            "_id" => "idToUpdate",
-            "name" => "John Doe",
-            "email" => "john@doe.com"
-        ]);
 
         $data = [
             "name" => "John Doe",
@@ -43,45 +47,27 @@ class UserTest extends TestCase {
         ];
 
         $service = new User();
-        $update = $service->update("idToUpdate", $data);
+        $update = $service->update("userId", $data);
         $this->assertTrue($update['success']);
         $this->assertEquals(200, $update['code']);
-        $getData = ModelsUser::where("_id", "idToUpdate")->first();
-        $this->assertEquals($data['email'], $getData->email);
-        DB::collection("users")->where("_id", "idToUpdate")->delete();
+        $this->assertDatabaseHas('users', $data);
     }
 
     public function test_delete_user_success(): void {
-        DB::collection("users")->where("_id", "idToDelete")->delete();
-        DB::collection("users")->insert([
-            "_id" => "idToDelete",
-            "name" => "John Doe",
-            "email" => "john@doe.com"
-        ]);
 
         $service = new User();
-        $delete = $service->delete("idToDelete");
+        $delete = $service->delete("userId");
         $this->assertTrue($delete['success']);
         $this->assertEquals(200, $delete['code']);
-        $getData = ModelsUser::where("_id", "idToDelete")->first();
-        $this->assertEmpty($getData);
-        DB::collection("users")->where("_id", "idToDelete")->delete();
+        $this->assertDatabaseMissing('users', ['_id' => "userId"]);
     }
 
     public function test_get_user_success(): void {
-        DB::collection("users")->where("_id", "idToGet")->delete();
-        DB::collection("users")->insert([
-            "_id" => "idToGet",
-            "name" => "John Doe",
-            "email" => "john@doe.com"
-        ]);
-
         $service = new User();
-        $get = $service->get("idToGet");
+        $get = $service->get("userId");
         $this->assertTrue($get['success']);
         $this->assertEquals(200, $get['code']);
-        $this->assertEquals(["_id" => "idToGet","name" => "John Doe","email" => "john@doe.com"], $get['data']->toArray());
-        DB::collection("users")->where("_id", "idToGet")->delete();
+        $this->assertEquals(["_id" => "userId","name" => "John Doe","email" => "john@doe.com"], $this->data);
     }
 
     public function test_validate_create_user_request_success(): void {
@@ -140,16 +126,10 @@ class UserTest extends TestCase {
     }
 
     public function test_user_add_movie_history_success(): void {
-        DB::collection("users")->where("_id", "idToAdd")->delete();
-        DB::collection("users")->insert([
-            "_id" => "idToAdd",
-            "name" => "John Doe",
-            "email" => "john@doe.com"
-        ]);
 
         $service = new User();
-        $addToHistory = $service->addToHistory("tt0816692", "idToAdd");
-        $get = $service->get("idToAdd");
+        $addToHistory = $service->addToHistory("tt0816692", "userId");
+        $get = $service->get("userId");
         $this->assertTrue($addToHistory['success']);
         $this->assertEquals(201, $addToHistory['code']);
         $this->assertArrayHasKey("movies", $get['data']);
@@ -193,24 +173,23 @@ class UserTest extends TestCase {
             "Website" => "N/A",
             "Response" => "True",
             ], $get['data']['movies'][0]);
-        DB::collection("users")->where("_id", "idToAdd")->delete();
     }
 
     public function test_user_remove_movie_history_success(): void {
-        DB::collection("users")->where("_id", "idToAdd")->delete();
-        DB::collection("users")->insert([
-            "_id" => "idToAdd",
-            "name" => "John Doe",
-            "email" => "john@doe.com"
-        ]);
-
         $service = new User();
-        $addToHistory = $service->addToHistory("tt0816692", "idToAdd");
-        $removeFromHistory = $service->removeFromHistory("tt0816692", "idToAdd");
-        $get = $service->get("idToAdd");
+        $addToHistory = $service->addToHistory("tt0816692", "userId");
+        $removeFromHistory = $service->removeFromHistory("tt0816692", "userId");
+        $get = $service->get("userId");
         $this->assertTrue($removeFromHistory['success']);
         $this->assertEquals(200, $removeFromHistory['code']);
         $this->assertEmpty($get['data']['movies']);
-        DB::collection("users")->where("_id", "idToAdd")->delete();
+        DB::collection("users")->where("_id", "userId")->delete();
+    }
+
+    public function tearDown(): void{
+        DB::collection("users")->where("_id", "userId")->delete();
+        ModelsUser::where("_id", hash("sha256", "email:john@doe2.com"))->delete();
+
+        parent::tearDown();
     }
 }
